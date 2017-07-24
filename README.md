@@ -2,9 +2,9 @@ Generate a random bitmap
 -------
 dependencies: 
 
-[Bitmap Image Reader Writer Library]http://partow.net/programming/bitmap/index.html
+[Bitmap Image Reader Writer Library](http://partow.net/programming/bitmap/index.html)
 
-[Random.org C++ Client]https://github.com/doughague/random-dot-org
+[Random.org C++ Client](https://github.com/doughague/random-dot-org)
 
 Usage
 -------

@@ -10,16 +10,25 @@ using namespace std;
 
 vector<long> generateRND(int len, pair<long int, long int> range) {
     RdoIntegers rdo;
-    rdo.setNum(10);
+    rdo.setNum(10000); // maximum allowed number for each batch
     rdo.setBase("10");
     rdo.setRange(range.first, range.second);
     rdo.setInMemory(true);
 
-    if (rdo.downloadData()) {
-        cout << "failed download data\n";
-        return vector<long>{}; 
+    vector<long int> data;
+    data.reserve(len);
+
+    while (data.size() < len) {
+        if (rdo.downloadData()) {
+            cout << "failed download data\n";
+            return vector<long>{}; 
+        }
+        vector<long int> cur = rdo.cache();
+        data.insert(data.end(), cur.begin(), cur.end());
     }
-    vector<long int> data = rdo.cache();
+    if (data.size() > len) {
+        data.resize(len);
+    }
     return data;
 }
 
@@ -35,7 +44,8 @@ vector<long int> fakeRND(int len, pair<long int, long int> range) {
 
 void generateBMP(string name) {
     int width = 128, height = 128, len = width * height * 3;
-    vector<long int> raw_data = fakeRND(len, {0, 255}); // generateRND(len, {0, 255});
+    // vector<long int> raw_data = fakeRND(len, {0, 255});
+    vector<long int> raw_data = generateRND(len, {0, 255});
     if (raw_data.empty() || raw_data.size() != len) {
         cout << "len:" << raw_data.size() << ",expected:" << len << endl;
         cout << "failed fetching random number\n";
@@ -55,7 +65,6 @@ void generateBMP(string name) {
 }
 int main(int argc, char **argv) {
     generateBMP("out.bmp");
-
 
     return 0;
 }
